@@ -56,11 +56,11 @@ pip install -r requirements.txt
 
 ## Project Structure
 .
-├── app.py                # Main Flask application
-├── text_process.py       # Text processing functions (translation and keyword detection)
-├── templates/
-│   └── index.html        # Webpage template
-├── requirements.txt      # Python dependencies
+- ├── app.py                # Main Flask application
+- ├── text_process.py       # Text processing functions (translation and keyword detection)
+- ├── templates/
+- │   └── index.html        # Webpage template
+- ├── requirements.txt      # Python dependencies
 
 
 ## How to Use
@@ -76,9 +76,9 @@ http://127.0.0.1:5000/
 Enter non-English text, click "Detect", and view the results.
 
 ## Future Enhancements
-Extend keyword detection to include more context-aware piracy identifiers.
-Add support for detecting text from uploaded files (e.g., PDFs, images with OCR).
-Include additional languages for keyword detection directly.
+- Extend keyword detection to include more context-aware piracy identifiers.
+- Add support for detecting text from uploaded files (e.g., PDFs, images with OCR).
+- Include additional languages for keyword detection directly.
 
 
 
