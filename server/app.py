@@ -36,7 +36,7 @@ PIRACY_KEYWORDS = [
     "pirate bay", "1337x", "yify", "RARBG", "katcr",
     "streaming site", "free movies", "APK download", "ISO file",
     "keygen", "fake license", "free software", "unlicensed",
-    "bypass activation", "license bypass", "copyright violation", "pirated", "rarbg"
+    "bypass activation", "license bypass", "copyright violation", "pirated", "rarbg", "magnetic links"
 ]
 
 # Function to use Google Translator API for translation
