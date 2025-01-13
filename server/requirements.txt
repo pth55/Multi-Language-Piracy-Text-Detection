@@ -1,0 +1,8 @@
+Flask
+# transformers
+# torch
+spacy
+langdetect
+pycountry
+PyPDF2
+flask_cors
