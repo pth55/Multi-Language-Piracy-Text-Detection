@@ -19,7 +19,12 @@ GOOGLE_TRANSLATOR_API_KEY = os.getenv("API_KEY")
 GOOGLE_TRANSLATOR_API_HOST = os.getenv("API_HOST")
 
 # Load spaCy NLP model
-nlp = spacy.load("en_core_web_sm")
+try:
+    nlp = spacy.load("en_core_web_sm")
+except Exception:
+    from spacy.cli import download
+    download("en_core_web_sm")
+    nlp = spacy.load("en_core_web_sm")
 
 # Piracy keywords
 PIRACY_KEYWORDS = [
