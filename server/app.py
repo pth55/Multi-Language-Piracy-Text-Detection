@@ -6,13 +6,17 @@ import pycountry
 import json
 import PyPDF2
 import spacy
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
 
 # Load API key securely
-GOOGLE_TRANSLATOR_API_KEY = "ba9f1e8108msha7d3143af439c3fp1fa586jsna15a20abeec9"
-GOOGLE_TRANSLATOR_API_HOST = "google-translator9.p.rapidapi.com"
+GOOGLE_TRANSLATOR_API_KEY = os.getenv("API_KEY")
+GOOGLE_TRANSLATOR_API_HOST = os.getenv("API_HOST")
 
 # Load spaCy NLP model
 nlp = spacy.load("en_core_web_sm")
