@@ -36,61 +36,59 @@ function App() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!prompt.trim() && !file) {
-      setError("Please enter text or select a file.");
-      return;
+  e.preventDefault();
+  if (!prompt.trim() && !file) {
+    setError("Please enter text or select a file.");
+    return;
+  }
+
+  setIsLoading(true);
+  setError(null);
+
+  try {
+    const formData = new FormData();
+    if (file) {
+      formData.append("file", file);
+    } else {
+      formData.append("text", prompt);
     }
 
-    setIsLoading(true);
-    setError(null);
+    // Ensure Content-Type is set correctly
+    const headers = file ? {} : { "Content-Type": "application/json" };
 
-    try {
-      const formData = new FormData();
-      if (file) {
-        formData.append("file", file);
-      } else {
-        formData.append("text", prompt);
-      }
+    const response = await fetch("http://127.0.0.1:5000/process", {
+      method: "POST",
+      headers: headers,
+      body: file ? formData : JSON.stringify({ text: prompt })
+    });
 
-      // If uploading JSON, ensure Content-Type is set correctly
-      const headers = file ? {} : { "Content-Type": "application/json" };
+    const data = await response.json();
 
-      // Construct request body
-      const body = file ? formData : JSON.stringify({ text: prompt });
-
-      const response = await fetch("https://piracy-text-be.onrender.com/process", {
-        method: "POST",
-        headers: headers,
-        body: body
-      });
-
-      const data = await response.json();
-
-      if (!response.ok || data.error) {
-        throw new Error(data.error || "Failed to get a valid response.");
-      }
-
-      const result: PromptResult = {
-        id: crypto.randomUUID(),
-        originalText: file ? `File: ${file.name}` : prompt,
-        translatedText: data.translated_text,
-        detectedLanguage: data.detected_language,
-        keywords: data.keywords,
-        timestamp: Date.now(),
-      };
-
-      saveToHistory(result);
-      setPrompt("");
-      setFile(null);
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "An unknown error occurred."
-      );
-    } finally {
-      setIsLoading(false);
+    if (!response.ok || data.error) {
+      throw new Error(data.error || "Failed to get a valid response.");
     }
-  };
+
+    const result: PromptResult = {
+      id: crypto.randomUUID(),
+      originalText: file ? `File: ${file.name}` : prompt,
+      translatedText: data.translated_text,
+      detectedLanguage: data.detected_language,
+      keywords: data.keywords,
+      timestamp: Date.now(),
+    };
+
+    saveToHistory(result);
+    setPrompt("");
+    setFile(null);
+  } catch (err) {
+    setError(
+      err instanceof Error ? err.message : "An unknown error occurred."
+    );
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
 
   return (
