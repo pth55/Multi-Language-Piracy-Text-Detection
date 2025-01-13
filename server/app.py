@@ -12,7 +12,7 @@ import os
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "https://piracy-text-fe.onrender.com"}})
 
 # Load API key securely
 GOOGLE_TRANSLATOR_API_KEY = os.getenv("API_KEY")
