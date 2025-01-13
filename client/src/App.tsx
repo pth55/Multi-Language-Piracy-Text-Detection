@@ -36,60 +36,55 @@ function App() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  if (!prompt.trim() && !file) {
-    setError("Please enter text or select a file.");
-    return;
-  }
-
-  setIsLoading(true);
-  setError(null);
-
-  try {
-    const formData = new FormData();
-    if (file) {
-      formData.append("file", file);
-    } else {
-      formData.append("text", prompt);
+    e.preventDefault();
+    if (!prompt.trim() && !file) {
+      setError("Please enter text or select a file.");
+      return;
     }
-
-    // Ensure Content-Type is set correctly
-    const headers = file ? {} : { "Content-Type": "application/json" };
-
-    const response = await fetch("http://127.0.0.1:5000/process", {
-      method: "POST",
-      headers: headers,
-      body: file ? formData : JSON.stringify({ text: prompt })
-    });
-
-    const data = await response.json();
-
-    if (!response.ok || data.error) {
-      throw new Error(data.error || "Failed to get a valid response.");
+  
+    setIsLoading(true);
+    setError(null);
+  
+    try {
+      const formData = new FormData();
+      if (file) {
+        formData.append("file", file);
+      } else {
+        formData.append("text", prompt);
+      }
+  
+      const headers: HeadersInit = file ? {} : { "Content-Type": "application/json" };
+  
+      const response = await fetch("http://127.0.0.1:5000/process", {
+        method: "POST",
+        headers,
+        body: file ? formData : JSON.stringify({ text: prompt }),
+      });
+  
+      const data = await response.json();
+  
+      if (!response.ok || data.error) {
+        throw new Error(data.error || "Failed to get a valid response.");
+      }
+  
+      const result: PromptResult = {
+        id: crypto.randomUUID(),
+        originalText: file ? `File: ${file.name}` : prompt,
+        translatedText: data.translated_text,
+        detectedLanguage: data.detected_language,
+        keywords: data.keywords,
+        timestamp: Date.now(),
+      };
+  
+      saveToHistory(result);
+      setPrompt("");
+      setFile(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An unknown error occurred.");
+    } finally {
+      setIsLoading(false);
     }
-
-    const result: PromptResult = {
-      id: crypto.randomUUID(),
-      originalText: file ? `File: ${file.name}` : prompt,
-      translatedText: data.translated_text,
-      detectedLanguage: data.detected_language,
-      keywords: data.keywords,
-      timestamp: Date.now(),
-    };
-
-    saveToHistory(result);
-    setPrompt("");
-    setFile(null);
-  } catch (err) {
-    setError(
-      err instanceof Error ? err.message : "An unknown error occurred."
-    );
-  } finally {
-    setIsLoading(false);
-  }
-};
-
-
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
