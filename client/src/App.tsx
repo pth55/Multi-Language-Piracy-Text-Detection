@@ -55,7 +55,7 @@ function App() {
   
       const headers: HeadersInit = file ? {} : { "Content-Type": "application/json" };
   
-      const response = await fetch("http://127.0.0.1:5000/process", {
+      const response = await fetch("https://piracy-text-be.onrender.com/process", {
         method: "POST",
         headers,
         body: file ? formData : JSON.stringify({ text: prompt }),
