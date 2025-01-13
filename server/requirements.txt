@@ -5,4 +5,4 @@ pycountry
 PyPDF2
 spacy
 gunicorn
-dotenv
+python-dotenv
