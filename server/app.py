@@ -86,7 +86,7 @@ def process():
         # Check if a PDF file was uploaded
         if 'file' in request.files:
             file = request.files['file']
-            if file.filename.endswith('.pdf'):
+            if file.filename.endswith('.pdf') or file.filename.endswith('.PDF'):
                 try:
                     pdf_reader = PyPDF2.PdfReader(file)
                     text = ''.join(page.extract_text() for page in pdf_reader.pages)
